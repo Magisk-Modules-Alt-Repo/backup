@@ -58,6 +58,8 @@ PARTS="$@"
 # Backup all partitions
 [[ "$PARTS" == "all" ]] && PARTS=`ls /dev/block/bootdevice/by-name/`
 
+mkdir -p "$BACKUP_PATH"
+
 # Backup specified partitions
 for part in $PARTS
 do
