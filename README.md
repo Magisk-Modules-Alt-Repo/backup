@@ -10,9 +10,9 @@ Options:
 
 Partition Examples:
   all
-  boot
-  persist
-  system
-  userdata
-  vendor
+  boot[_a,_b]
+  persist[_a,_b]
+  system[_a,_b]
+  userdata[_a,_b]
+  vendor[_a,_b]
 ```

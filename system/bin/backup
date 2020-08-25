@@ -55,21 +55,14 @@ PARTS="$@"
 
 [[ -z "$@" ]] && err "No partitions specified. Exiting."
 
-# Get active slot
-SLOT=`getprop ro.boot.slot_suffix`
-
 # Backup all partitions
-if [[ "$PARTS" == "all" ]]
-then
-	PARTS=`ls /dev/block/bootdevice/by-name/`
-	SLOT=""
-fi
+[[ "$PARTS" == "all" ]] && PARTS=`ls /dev/block/bootdevice/by-name/`
 
 # Backup specified partitions
 for part in $PARTS
 do
 	dbg "Backing up $part..."
-	dd if="/dev/block/bootdevice/by-name/$part$SLOT" of="$BACKUP_PATH/$part.img"
+	dd if="/dev/block/bootdevice/by-name/$part" of="$BACKUP_PATH/$part.img"
 done
 
 dbg "Done with: $@."
