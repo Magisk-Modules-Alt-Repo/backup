@@ -51,6 +51,9 @@ while getopts ":h:d" opt; do
 done
 shift $((OPTIND-1))
 
+# Get active slot
+SLOT=`getprop ro.boot.slot_suffix`
+
 PARTS="$@"
 
 [[ -z "$@" ]] && err "No partitions specified. Exiting."
@@ -64,7 +67,19 @@ mkdir -p "$BACKUP_PATH"
 for part in $PARTS
 do
 	dbg "Backing up $part..."
-	dd if="/dev/block/bootdevice/by-name/$part" of="$BACKUP_PATH/$part.img"
+
+	# Get path
+	PARTPATH="/dev/block/bootdevice/by-name/$part"
+	[[ ! -L "$PARTPATH" ]] && PARTPATH="$PARTPATH$SLOT"
+
+	# Check if exists
+	if [[ ! -L "$PARTPATH" ]]
+	then
+		dbg "Could not find $part. Skipping."
+		continue
+	fi
+
+	dd if="$PARTPATH" of="$BACKUP_PATH/$part.img"
 done
 
 dbg "Done with: $@."
