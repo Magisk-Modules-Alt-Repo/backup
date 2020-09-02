@@ -2,5 +2,5 @@ id=backup
 name=Backup
 version=v1.0
 versionCode=1
-author=tytydraco
+author=Draco
 description=An easy CLI backup tool without using a custom recovery.
